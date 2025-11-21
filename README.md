@@ -61,6 +61,9 @@ Test d’affichage :
 ```
 printf("Test printf sur USART2 !\r\n");
 ```
+
+![Test Affichage](Test_Affichage.jpeg)
+
 ## 🔹 1.5 Activation FreeRTOS (CMSIS V1)
 ![Activation FreeRTOS](Activation%20FreeRTOS.png)
 
