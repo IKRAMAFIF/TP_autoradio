@@ -37,7 +37,7 @@ HAL_Delay(500);
 
 ## 🔹 1.3 Test UART2 
 
-TPour tester la communication série entre la carte NUCLEO-L476RG et le PC via la STLink, nous avons envoyé régulièrement une chaîne de caractères sur l’USART2.
+Pour tester la communication série entre la carte NUCLEO-L476RG et le PC via la STLink, nous avons envoyé régulièrement une chaîne de caractères sur l’USART2.
 ```
 while (1)
 {
@@ -61,8 +61,8 @@ Test d’affichage :
 ```
 printf("Test printf sur USART2 !\r\n");
 ```
-
 ![Test Affichage](Test_Affichage.jpeg)
+
 
 ## 🔹 1.5 Activation FreeRTOS (CMSIS V1)
 ![Activation FreeRTOS](Activation%20FreeRTOS.png)
