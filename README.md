@@ -82,16 +82,6 @@ Cette approche permet au shell de tourner en continu, en lisant les caractères 
 
 La tâche a été créée avec la fonction `xTaskCreate` :
 
-```c
-xTaskCreate(
-    ShellTask,
-    "ShellTask",
-    512,
-    NULL,
-    1,
-    NULL
-);
-```
 ![Shell 1a](Shell1a.jpeg)
 
 - **Fonctionnement de la tâche ShellTask**
@@ -138,7 +128,7 @@ int sh_blink(int argc, char **argv)
 ![Shell 3a](Shell3a.jpeg)
 
 
-###   1.6.b  – Fonctionnement du Shell en interruption + sémaphore FreeRTOS
+### 1.6.b  – Fonctionnement du Shell en interruption + sémaphore FreeRTOS
 
 Dans cette version, la réception UART ne se fait plus en mode bloquant, mais via une **interruption**.  
 Chaque caractère reçu déclenche une **IT UART**, qui réveille la tâche du shell grâce à un **sémaphore binaire**.
@@ -147,59 +137,21 @@ Ce mécanisme nous permet d’éviter de bloquer la tâche, d’avoir une meille
 
 - À chaque appel, la fonction déclenche une réception IT et attend le sémaphore :
 
-```c
-static char uart_read() {
-
-    HAL_UART_Receive_IT(&huart2, &rxbuffer, 1);
-    xSemaphoreTake(uartRxSemaphore, HAL_MAX_DELAY);
-
-    return (char)rxbuffer;
-}
-```
 ![Shell 1b](Shell1b.jpeg)
 
 - L’interruption donne le sémaphore pour réveiller la tâche Shell :
 
-```
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART2)
-    {
-        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
-        xSemaphoreGiveFromISR(uartRxSemaphore, &xHigherPriorityTaskWoken);
-        HAL_UART_Receive_IT(&huart2, &rxbuffer, 1);
-
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    }
-}
-```
 ![Shell 2b](Shell2b.jpeg)
 
 - Création du sémaphore + lancement de la tâche :
   
-```
-  if (xTaskCreate(ShellTask,"shell", 256, NULL,1, &h_shell_task)!=pdPASS)
-{
-    printf("error creation task shell\r\n");
-    Error_Handler();
-}
-
-uartRxSemaphore = xSemaphoreCreateBinary();
-if (uartRxSemaphore == NULL)
-{
-    Error_Handler();
-}
-
-vTaskStartScheduler();
-```
 ![Shell 3b](Shell3b.jpeg)
 
 - Résultat sur Tera Term (réception OK via interruptions)
 
 ![Shell 4b](Shell4b.jpeg)
 
-###   1.6.c  –Fonctionnement du Shell avec un driver
+###  1.6.c  –Fonctionnement du Shell avec un driver
 Dans cette version, le shell n’utilise plus directement les fonctions UART ni le sémaphore.  
 Toutes les opérations d’entrée/sortie sont encapsulées dans une **structure driver**, ce qui rend le shell plus modulable et indépendant du matériel.
 
@@ -209,13 +161,65 @@ Le shell est maintenant contrôlé via les deux pointeurs de fonctions :
 
 - Initialisation du driver:
 
+![Shell 1c](Shell1c.jpeg)
+
 - Commande associée : fonction()
  Cette fonction envoie un message via le driver, sans utiliser printf :
 
+![Shell 2c](Shell2c.jpeg)
 
 - Résultat obtenu dans Tera Term
 Le shell utilise bien le driver pour transmettre la réponse :
 
+![Shell 3c](Shell3c.jpeg)
 
+---
+
+# 2- Le GPIO Expander et le VU-Metre
+
+## 2.1 Configuration
+
+## 2.1 Configuration du GPIO Expander
+
+### 2.1.1 Référence du GPIO Expander
+Le composant utilisé dans ce TP est le **MCP23S17**, un GPIO Expander fonctionnant en **SPI**.
+
+### 2.1.2 SPI utilisé sur le STM32
+Dans notre configuration, le STM32 utilise l’interface **SPI3** pour communiquer avec le MCP23S17.
+
+### 2.1.3 Paramètres SPI à configurer dans STM32CubeIDE
+Les paramètres essentiels du SPI3 sont les suivants :
+- **Mode** : Full-Duplex Master  
+- **Frame Format** : Motorola  
+- **Data Size** : 8 bits  
+- **First Bit** : MSB First  
+- **Clock Prescaler** : 2 (40 Mbit/s)  
+- **NSS** : Software ou Hardware Disable  
+- **Polarity / Phase (CPOL/CPHA)** : par défaut  
+- **GPIO associés** :
+  - SCK → PC10  
+  - MISO → PC11  
+  - MOSI → PC12  
+  - CS → Broche manuelle (VU_nRESET ici)
+  - 
+### 2.1.4 Configuration effectuée
+Voici la capture de configuration utilisée :
+
+![Configuration SPI](ConfigurationSPI.jpeg)
+
+## 2.2 Tests
+
+### 2.2.1 Faire clignoter une ou plusieurs LED
+
+Pour tester le fonctionnement du GPIO Expander (MCP23S17), nous avons commencé par allumer et éteindre une LED connectée au module via SPI.
+
+![Test 1a](Test1a.jpeg)
+
+
+### 2.2.2 Tester toutes les LED (chenillard)
+
+Pour tester l’ensemble des sorties du GPIO Expander, nous avons implémenté un chenillard, c’est-à-dire une LED qui avance de bit en bit.
+
+![Test 2a](Test2a.jpeg)
 
 
