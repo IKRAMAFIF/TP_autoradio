@@ -361,7 +361,54 @@ Nous avons ensuite visualisé les trames I2C afin de confirmer :
 
 ![I2C_Trames](assets/I2C_Trames.jpeg)
 
+#### 3.2.4 Lecture validée par l'enseignant
 
+La communication I2C et la lecture du CHIP_ID ont été validées.
+
+#### 3.2.5 Recherche des valeurs des registres dans la datasheet
+
+Nous avons ensuite collecté, dans la documentation du SGTL5000, les valeurs requises pour la configuration initiale :
+
+- CHIP_ANA_POWER
+
+- CHIP_LINREG_CTRL
+
+- CHIP_REF_CTRL
+
+- CHIP_LINE_OUT_CTRL
+
+- CHIP_SHORT_CTRL
+
+- CHIP_ANA_CTRL
+
+- CHIP_ANA_POWER
+
+- CHIP_DIG_POWER
+
+- CHIP_LINE_OUT_VOL
+
+- CHIP_CLK_CTRL
+
+- CHIP_I2S_CTRL
+
+- CHIP_ADCDAC_CTRL
+
+- CHIP_DAC_VOL
+
+Ces valeurs seront appliquées dans l’initialisation du CODEC.
+
+#### 3.2.6 Création des fichiers sgtl5000.c et sgtl5000.h
+
+Deux fichiers ont été ajoutés afin de structurer le driver du CODEC :
+
+```c
+/Core/Src/sgtl5000.c
+/Core/Inc/sgtl5000.h
+```
+
+#### 3.2.7 Fonction d’initialisation du CODEC
+
+Dans sgtl5000.c, nous avons créé une fonction dédiée :
 
 
 
