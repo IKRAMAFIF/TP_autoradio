@@ -278,7 +278,7 @@ Configuration du SAI A
 
 ![SAI2 Config](assets/SAI2_Config.jpeg)
 
- 3.1.4 Affectation des broches SAI
+**Affectation des broches SAI**
 
 Les broches doivent correspondre EXACTEMENT à celles du CODEC.
 
@@ -308,6 +308,9 @@ Les interruptions du SAI sont ensuite activées pour gérer :
 
 - La réception des samples audio
 - L’envoi automatique via DMA
+
+
+
 
 
 
