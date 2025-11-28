@@ -252,9 +252,13 @@ A 2 1 → LED A2 ON
 
 A 1 0 → LED A1 OFF
 
+**Résultat dans le terminal**
+
 ![Driver](assets/Driver.jpeg)
 
+**Résultat sur la carte**
 
+![LED_Board_Output](assets/LED_Board_Output.jpeg)
 
 ## 3. Le CODEC Audio SGTL5000
 ### 3.1 Configuration préalables
