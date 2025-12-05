@@ -420,27 +420,14 @@ la transmission vers le DAC (sai_tx_buffer),
 la mise en place du traitement temps réel.
 
 
-#### 3.3.2 Observation des signaux I2S à l’oscilloscope
-
-Une fois la transmission et réception DMA activées, nous avons observé les signaux I2S à l’oscilloscope.
-
-En particulier, nous avons vérifié la présence des signaux :
-
-**MCLK — Master Clock**
-
-![I2S MCLK](assets/I2S_MCLK.jpeg)
-
-**SCLK — Serial Clock**
-
-![I2S SCLK](assets/I2S_SCLK.jpeg)
-
+#c
 ### 3.4 Génération de signal audio
 
 L’objectif de cette section est de générer un **signal triangulaire** puis de l’observer à l’oscilloscope via la sortie audio du CODEC SGTL5000.
 
 #### 3.4.1 Génération d’un signal triangulaire
 
-Un buffer audio a été rempli avec une onde triangulaire simple :
+Un buffer audio a été rempli avec une onde triangulaire simple.
 
 #### 3.4.2 Vérification à l’oscilloscope
 
@@ -448,8 +435,23 @@ Un signal triangulaire stable a été observé sur la sortie LINE-OUT du CODEC.
 
 ![Signal triangulaire](assets/Signal_Triangulaire.jpeg)
 
-#### 
+### 3.5 Bypass numérique
+
+L’objectif de cette partie est de réaliser un **bypass numérique** : les échantillons provenant de l’ADC du SGTL5000 sont récupérés via l’interface I2S, puis immédiatement renvoyés vers le DAC sans aucun traitement.  
+Le signal d’entrée (LINE-IN) doit ainsi ressortir directement sur la sortie audio.
+
+#### 3.5.1 Implémentation du bypass
+
+Le STM32 reçoit les données audio via le DMA du SAI2 Block B (RX).  
+À chaque interruption (`HalfCplt` et `Cplt`), les échantillons reçus sont copiés dans le buffer de transmission du SAI2 Block A (TX).
+
+Le code suivant réalise la copie directe RX → TX :
+![Bypass code](assets/Bypass_code.jpeg)
 
 
+#### 3.5.2 Vérification à l’oscilloscope
 
+L’oscilloscope montre que la forme d’onde en sortie du CODEC est identique à celle appliquée en entrée LINE-IN.
+Le bypass numérique fonctionne correctement : aucune distorsion ni délai perceptible n’a été observé.
 
+![Bypass osc](assets/Bypass_osc.jpeg)
