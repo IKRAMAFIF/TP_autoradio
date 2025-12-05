@@ -393,7 +393,20 @@ Deux fichiers ont été ajoutés afin de structurer le driver du CODEC :
 
 #### 3.2.7 Fonction d’initialisation du CODEC
 
-Dans sgtl5000.c, nous avons créé une fonction dédiée :
+Dans sgtl5000.c, nous avons créé une fonction dédiée.
+
+#### 3.2.8 Écriture des registres du CODEC via I2C
+
+Résultat obtenu sur le terminal (preuve que chaque registre a été configuré correctement) :
+
+L’initialisation se termine par :
+
+SGTL5000: Initialization complete.
+
+![Initialisation](assets/Initialisation.jpeg)
+
+confirmant que le CODEC est bien configuré et opérationnel.
+
 
 
 
