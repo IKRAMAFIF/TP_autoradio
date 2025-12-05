@@ -446,12 +446,13 @@ L’objectif de cette section est de générer un **signal triangulaire** puis d
 
 Un buffer audio a été rempli avec une onde triangulaire simple :
 
-
 #### 3.4.2 Vérification à l’oscilloscope
 
 Un signal triangulaire stable a été observé sur la sortie LINE-OUT du CODEC.
 
 ![Signal triangulaire](assets/Signal_Triangulaire.jpeg)
+
+#### 
 
 
 
