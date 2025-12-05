@@ -399,13 +399,9 @@ Dans sgtl5000.c, nous avons créé une fonction dédiée.
 
 Résultat obtenu sur le terminal (preuve que chaque registre a été configuré correctement) :
 
-L’initialisation se termine par :
-
-SGTL5000: Initialization complete.
-
 ![Initialisation](assets/Initialisation.jpeg)
 
-confirmant que le CODEC est bien configuré et opérationnel.
+L’initialisation se termine par : SGTL5000: Initialization complete, confirmant que le CODEC est bien configuré et opérationnel.
 
 ### 3.3 Signaux I2S
 
